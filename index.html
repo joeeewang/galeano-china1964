@@ -9,10 +9,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
     --bg:        #f7f4ef;
-    --paper:     #faf8f4;
     --ink:       #1a1713;
     --ink-light: #5a5248;
     --rule:      #c8bfb0;
@@ -21,308 +19,91 @@
     --font-body: 'Cormorant Garamond', Georgia, serif;
     --font-head: 'IM Fell English', Georgia, serif;
   }
-
   html { font-size: 18px; scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-body); display: flex; min-height: 100vh; }
 
-  body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: var(--font-body);
-    display: flex;
-    min-height: 100vh;
-  }
-
-  /* ── SIDEBAR ─────────────────────────────── */
-  #sidebar {
-    width: var(--sidebar-w);
-    min-height: 100vh;
-    background: var(--ink);
-    color: #e8e2d8;
-    display: flex;
-    flex-direction: column;
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow-y: auto;
-    flex-shrink: 0;
-  }
-
-  .sidebar-header {
-    padding: 2.5rem 1.75rem 1.5rem;
-    border-bottom: 1px solid #333;
-  }
-
-  .sidebar-header .book-title {
-    font-family: var(--font-head);
-    font-size: 1.2rem;
-    line-height: 1.3;
-    letter-spacing: 0.01em;
-    color: #f0ebe2;
-    font-style: italic;
-    margin-bottom: 0.4rem;
-  }
-
-  .sidebar-header .book-year {
-    font-family: var(--font-body);
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--rule);
-  }
-
-  .sidebar-header .book-author {
-    font-family: var(--font-body);
-    font-size: 0.82rem;
-    letter-spacing: 0.06em;
-    color: #a09888;
-    margin-top: 0.2rem;
-  }
-
+  /* SIDEBAR */
+  #sidebar { width: var(--sidebar-w); min-height: 100vh; background: var(--ink); color: #e8e2d8; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0; }
+  .sidebar-header { padding: 2.5rem 1.75rem 1.5rem; border-bottom: 1px solid #333; }
+  .sidebar-header .book-title { font-family: var(--font-head); font-size: 1.2rem; line-height: 1.3; color: #f0ebe2; font-style: italic; margin-bottom: 0.4rem; }
+  .sidebar-header .book-year { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rule); }
+  .sidebar-header .book-author { font-size: 0.82rem; letter-spacing: 0.06em; color: #a09888; margin-top: 0.2rem; }
   nav { padding: 1.25rem 0; flex: 1; }
-
   nav ul { list-style: none; }
-
   nav li { border-bottom: 1px solid #222; }
-
-  nav button {
-    width: 100%;
-    background: none;
-    border: none;
-    padding: 0.95rem 1.75rem;
-    text-align: left;
-    cursor: pointer;
-    color: #b0a898;
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    transition: background 0.15s, color 0.15s;
-  }
-
-  nav button:hover {
-    background: #252220;
-    color: #e8e2d8;
-  }
-
-  nav button.active {
-    background: var(--accent);
-    color: #f5ede8;
-  }
-
-  nav button .nav-num {
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    opacity: 0.65;
-  }
-
+  nav button { width: 100%; background: none; border: none; padding: 0.95rem 1.75rem; text-align: left; cursor: pointer; color: #b0a898; display: flex; flex-direction: column; gap: 0.15rem; transition: background 0.15s, color 0.15s; }
+  nav button:hover { background: #252220; color: #e8e2d8; }
+  nav button.active { background: var(--accent); color: #f5ede8; }
+  nav button .nav-num { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.65; }
   nav button.active .nav-num { opacity: 0.8; }
+  nav button .nav-title { font-family: var(--font-head); font-size: 0.92rem; line-height: 1.35; font-style: italic; }
 
-  nav button .nav-title {
-    font-family: var(--font-head);
-    font-size: 0.92rem;
-    line-height: 1.35;
-    font-style: italic;
-  }
+  /* MAIN */
+  #main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 
-  /* ── MAIN CONTENT ────────────────────────── */
-  #main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-  }
+  /* COVER */
+  #cover { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 3rem; text-align: center; min-height: 100vh; }
+  #cover .cover-year { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 2rem; }
+  #cover h1 { font-family: var(--font-head); font-size: clamp(2.2rem, 5vw, 3.8rem); font-style: italic; line-height: 1.15; margin-bottom: 0.5rem; }
+  #cover .cover-subtitle { font-family: var(--font-head); font-size: clamp(1rem, 2vw, 1.35rem); font-style: italic; color: var(--ink-light); margin-bottom: 1.5rem; }
+  #cover .cover-rule { width: 60px; height: 1px; background: var(--accent); margin: 1.5rem auto; }
+  #cover .cover-author { font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 0.4rem; }
+  #cover .cover-place { font-size: 0.78rem; color: #9a9088; letter-spacing: 0.08em; }
+  #cover .cover-hint { margin-top: 4rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rule); }
 
-  /* Cover / home screen */
-  #cover {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 4rem 3rem;
-    text-align: center;
-    min-height: 100vh;
-  }
+  /* READER */
+  #reader { display: none; padding: 4rem 4vw 6rem; max-width: 760px; margin: 0 auto; width: 100%; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  #reader h2.chapter-heading { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 3rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--rule); }
+  #reader h2 .cap-label { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-family: var(--font-body); font-style: normal; }
+  #reader h2 .cap-title { font-family: var(--font-head); font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-style: italic; line-height: 1.2; }
+  #reader h3.section-heading { font-family: var(--font-head); font-size: 1rem; font-style: italic; color: var(--ink-light); margin: 2.5rem 0 1rem; padding-left: 1rem; border-left: 2px solid var(--accent); }
+  #reader p { font-size: 1.05rem; line-height: 1.82; margin-bottom: 1.1em; text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
+  #reader blockquote.epigraph { margin: 2rem 0 2.5rem 1.5rem; padding-left: 1.25rem; border-left: 1px solid var(--rule); font-style: italic; color: var(--ink-light); font-size: 1rem; line-height: 1.75; }
+  #reader p.footnote { font-size: 0.78rem; color: var(--ink-light); line-height: 1.5; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--rule); }
 
-  #cover .cover-year {
-    font-size: 0.72rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--ink-light);
-    margin-bottom: 2rem;
-  }
+  /* TIMELINE */
+  #timeline-view { display: none; padding: 3rem 3vw 6rem; max-width: 900px; margin: 0 auto; width: 100%; animation: fadeIn 0.3s ease; }
+  .tl-header { margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--rule); }
+  .tl-header .cap-label { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-family: var(--font-body); display: block; margin-bottom: 0.4rem; }
+  .tl-header h2 { font-family: var(--font-head); font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-style: italic; line-height: 1.2; }
+  .tl-header p { margin-top: 0.75rem; font-size: 0.9rem; color: var(--ink-light); line-height: 1.6; }
+  .tl-filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2.5rem; align-items: center; }
+  .tl-filters span { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-right: 0.25rem; }
+  .filter-btn { background: none; border: 1px solid var(--rule); padding: 0.3rem 0.75rem; font-family: var(--font-body); font-size: 0.78rem; color: var(--ink-light); cursor: pointer; border-radius: 2px; transition: all 0.15s; letter-spacing: 0.04em; }
+  .filter-btn:hover { border-color: var(--ink-light); color: var(--ink); }
+  .filter-btn.active { background: var(--ink); color: #f0ebe2; border-color: var(--ink); }
+  .tl-spine { position: relative; padding-left: 2.5rem; }
+  .tl-spine::before { content: ''; position: absolute; left: 0.65rem; top: 0.5rem; bottom: 0.5rem; width: 1px; background: var(--rule); }
+  .tl-era { position: relative; margin: 2.5rem 0 0.5rem; padding: 0.6rem 1rem 0.6rem 0; }
+  .tl-era.hidden { display: none; }
+  .tl-era-dot { position: absolute; left: -2.18rem; top: 0.9rem; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--bg); }
+  .tl-era-label { font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-light); }
+  .tl-era-title { font-family: var(--font-head); font-size: 1rem; font-style: italic; color: var(--ink-light); margin-top: 0.15rem; }
+  .tl-event { position: relative; padding: 1.1rem 0; display: flex; gap: 1.25rem; border-bottom: 1px solid #ede8e0; }
+  .tl-event.hidden { display: none; }
+  .tl-dot { position: absolute; left: -2.18rem; top: 1.55rem; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--bg); }
+  .tl-event-body { flex: 1; min-width: 0; }
+  .tl-date { font-size: 0.72rem; letter-spacing: 0.1em; color: var(--ink-light); text-transform: uppercase; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+  .tl-group-tag { font-size: 0.62rem; letter-spacing: 0.06em; padding: 0.15rem 0.5rem; border-radius: 2px; color: #fff; opacity: 0.9; }
+  .tl-event h3 { font-family: var(--font-head); font-size: 1.1rem; font-style: italic; line-height: 1.3; margin-bottom: 0.4rem; }
+  .tl-event p { font-size: 0.88rem; line-height: 1.65; color: var(--ink-light); margin: 0; }
+  .tl-event-img { width: 120px; height: 80px; object-fit: cover; flex-shrink: 0; opacity: 0.85; filter: grayscale(15%); align-self: flex-start; margin-top: 0.25rem; }
+  .hidden-img { display: none !important; }
 
-  #cover h1 {
-    font-family: var(--font-head);
-    font-size: clamp(2.2rem, 5vw, 3.8rem);
-    font-style: italic;
-    line-height: 1.15;
-    color: var(--ink);
-    margin-bottom: 0.5rem;
-    max-width: 600px;
-  }
-
-  #cover .cover-subtitle {
-    font-family: var(--font-head);
-    font-size: clamp(1rem, 2vw, 1.35rem);
-    font-style: italic;
-    color: var(--ink-light);
-    margin-bottom: 1.5rem;
-  }
-
-  #cover .cover-rule {
-    width: 60px;
-    height: 1px;
-    background: var(--accent);
-    margin: 1.5rem auto;
-  }
-
-  #cover .cover-author {
-    font-size: 0.85rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-light);
-    margin-bottom: 0.4rem;
-  }
-
-  #cover .cover-place {
-    font-size: 0.78rem;
-    color: #9a9088;
-    letter-spacing: 0.08em;
-  }
-
-  #cover .cover-hint {
-    margin-top: 4rem;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--rule);
-  }
-
-  /* Reading pane */
-  #reader {
-    display: none;
-    padding: 4rem 4vw 6rem;
-    max-width: 760px;
-    margin: 0 auto;
-    width: 100%;
-    animation: fadeIn 0.3s ease;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Typography inside reader */
-  #reader h2.chapter-heading {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    margin-bottom: 3rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--rule);
-  }
-
-  #reader h2 .cap-label {
-    font-size: 0.68rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--accent);
-    font-family: var(--font-body);
-    font-style: normal;
-  }
-
-  #reader h2 .cap-title {
-    font-family: var(--font-head);
-    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-    font-style: italic;
-    line-height: 1.2;
-    color: var(--ink);
-  }
-
-  #reader h3.section-heading {
-    font-family: var(--font-head);
-    font-size: 1rem;
-    font-style: italic;
-    color: var(--ink-light);
-    margin: 2.5rem 0 1rem;
-    padding-left: 1rem;
-    border-left: 2px solid var(--accent);
-    letter-spacing: 0.03em;
-  }
-
-  #reader p {
-    font-size: 1.05rem;
-    line-height: 1.82;
-    color: var(--ink);
-    margin-bottom: 1.1em;
-    text-align: justify;
-    hyphens: auto;
-    -webkit-hyphens: auto;
-  }
-
-  #reader blockquote.epigraph {
-    margin: 2rem 0 2.5rem 1.5rem;
-    padding-left: 1.25rem;
-    border-left: 1px solid var(--rule);
-    font-style: italic;
-    color: var(--ink-light);
-    font-size: 1rem;
-    line-height: 1.75;
-  }
-
-  #reader p.footnote {
-    font-size: 0.78rem;
-    color: var(--ink-light);
-    line-height: 1.5;
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--rule);
-  }
-
-  em.nota {
-    font-size: 0.85rem;
-    color: var(--ink-light);
-    display: block;
-    margin: 1rem 0;
-    font-style: italic;
-  }
-
-  /* Back to top */
-  #back-top {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    width: 40px;
-    height: 40px;
-    background: var(--ink);
-    color: #e8e2d8;
-    border: none;
-    cursor: pointer;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-  }
+  /* BACK TO TOP */
+  #back-top { position: fixed; bottom: 2rem; right: 2rem; width: 40px; height: 40px; background: var(--ink); color: #e8e2d8; border: none; cursor: pointer; display: none; align-items: center; justify-content: center; font-size: 1.1rem; opacity: 0.7; transition: opacity 0.2s; }
   #back-top:hover { opacity: 1; }
   #back-top.visible { display: flex; }
 
-  /* Mobile */
   @media (max-width: 680px) {
     body { flex-direction: column; }
-    #sidebar {
-      width: 100%;
-      min-height: auto;
-      height: auto;
-      position: relative;
-    }
+    #sidebar { width: 100%; min-height: auto; height: auto; position: relative; }
     nav ul { display: flex; overflow-x: auto; }
     nav li { border-bottom: none; border-right: 1px solid #222; flex-shrink: 0; }
     nav button { padding: 0.85rem 1.2rem; min-width: 160px; }
-    #cover, #reader { padding: 2.5rem 1.25rem; }
+    #cover, #reader, #timeline-view { padding: 2.5rem 1.25rem; }
+    .tl-event-img { width: 80px; height: 56px; }
   }
 </style>
 </head>
@@ -334,9 +115,7 @@
     <div class="book-author">Eduardo Galeano</div>
     <div class="book-year">Crónica de un desafío · 1964</div>
   </div>
-  <nav>
-    <ul id="nav-list"></ul>
-  </nav>
+  <nav><ul id="nav-list"></ul></nav>
 </aside>
 
 <main id="main">
@@ -350,6 +129,7 @@
     <div class="cover-hint">Selecciona un capítulo para comenzar</div>
   </div>
   <div id="reader"></div>
+  <div id="timeline-view"></div>
 </main>
 
 <button id="back-top" title="Volver arriba">↑</button>
@@ -845,74 +625,325 @@ Hace cerca de cincuenta años, un estudiante de magisterio, de costumbres ascét
 <p>Si esta crónica de un desafío, desafío al rojo vivo de la revolución de los suburbios del mundo, contribuye, en la pequeña medida de sus fuerzas, a fisurar el muro -—cal y arena, miedo y desprecio— el autor se sentirá con derecho a creer, por un rato siquiera, que escribir sirve, todavía, para algo.</p>` }
 ];
 
-const navList  = document.getElementById('nav-list');
-const cover    = document.getElementById('cover');
-const reader   = document.getElementById('reader');
-const backTop  = document.getElementById('back-top');
+const TIMELINE = [
+  {
+    "year": 1949,
+    "month": null,
+    "day": null,
+    "headline": "Phase I: Broad Friendship & Exploration",
+    "text": "(1949 – Early 1960s) China emphasized historical similarities and anti-imperialist goals. Policy was low-key, focusing on friendship rather than immediate seizure of power.",
+    "img": "https://asiasociety.org/files/uploads/191images/160810_asiablog_C45-28_Mao-Tse-Tung-(Zedong)-toasts-Egyptian-Attache%2C-Egypt-National-Day%2C-Peking-(Beijing)-China-1956-(small)(1).jpg",
+    "group": "Historiography",
+    "type": "era"
+  },
+  {
+    "year": 1949,
+    "month": 10,
+    "day": 1,
+    "headline": "Founding of the PRC",
+    "text": "The CCP takes power, initiating people-to-people diplomacy with Latin America. China begins inviting over 1,200 Latin Americans to visit between 1949 and 1960.",
+    "img": "https://totallyhistory.com/wp-content/uploads/2011/05/Mao-Zedong-Proclaiming-the-Founding-of-the-PRC-in-1949.jpg",
+    "group": "China"
+  },
+  {
+    "year": 1952,
+    "month": null,
+    "day": null,
+    "headline": "Chile-China Cultural Institute",
+    "text": "Co-founded by Pablo Neruda, muralist José Venturelli, and a young Salvador Allende. By framing the relationship as cultural, they facilitated trade delegations and copper shipments China needed for industrialization.",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/a/aa/Salvador_Allende_y_Pablo_Neruda.jpg",
+    "group": "LatAm"
+  },
+  {
+    "year": 1959,
+    "month": 1,
+    "day": 1,
+    "headline": "Victory of the Cuban Revolution",
+    "text": "Fidel Castro's victory provided China with its first solid political foothold in the Western Hemisphere.",
+    "img": "https://www.historytoday.com/sites/default/files/00_Castro.jpg",
+    "group": "LatAm"
+  },
+  {
+    "year": 1960,
+    "month": 9,
+    "day": 28,
+    "headline": "Formal Ties with Cuba",
+    "text": "Cuba becomes the first Latin American nation to establish formal diplomatic relations with the PRC.",
+    "img": "",
+    "group": "China/LatAm"
+  },
+  {
+    "year": 1963,
+    "month": null,
+    "day": null,
+    "headline": "Sino-Soviet Split",
+    "text": "The rupture leads to competition for leadership within Latin American communist parties. Latin American left-wing intellectuals face a question: between Moscow and Beijing, who represents the orthodoxy?",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/7/70/Mao_Ts%C3%A9-toung%2C_portrait_en_buste%2C_assis%2C_faisant_face_%C3%A0_Nikita_Khrouchtchev%2C_pendant_la_visite_du_chef_russe_1958_%C3%A0_P%C3%A9kin.jpg",
+    "group": "USSR"
+  },
+  {
+    "year": 1963,
+    "month": 10,
+    "day": 8,
+    "headline": "Galeano & Bernhard Arrive in China",
+    "text": "Uruguayan journalist Eduardo Galeano and economist Guillermo Bernhard begin their journey — Beijing, Wuhan, Hangzhou, Shanghai, Guangzhou — lasting until early November. Vice Premier Bo Yibo receives them in Beijing on October 8.",
+    "img": "",
+    "group": "Core"
+  },
+  {
+    "year": 1963,
+    "month": 11,
+    "day": 4,
+    "headline": "Galeano Meets Zhou Enlai",
+    "text": "Premier Zhou Enlai receives Galeano in an exclusive interview at the Beijing Hotel, lasting an hour and a half. Galeano had repeatedly requested a meeting with Mao to discuss the Sino-Soviet split; the Zhou meeting was likely arranged as a compromise.",
+    "img": "",
+    "group": "Core"
+  },
+  {
+    "year": 1964,
+    "month": 1,
+    "day": 3,
+    "headline": "Bernhard's Travelogue in Reference News",
+    "text": "Bernhard's travelogue is translated and published on the front page of Reference News (参考消息). His account — affirming people's communes, agricultural recovery, and Soviet inadequacy — was placed alongside a NYT commentary describing 1963 as a year of failures for the U.S. and USSR.",
+    "img": "",
+    "group": "Core"
+  },
+  {
+    "year": 1964,
+    "month": 3,
+    "day": null,
+    "headline": "Galeano Publishes China 1964",
+    "text": "China 1964: Crónica de un Desafío is published in Buenos Aires by Jorge Álvarez. Galeano's skeptical, journalistic account receives a cold reception in China and has never been translated or published there.",
+    "img": "",
+    "group": "Core"
+  },
+  {
+    "year": 1964,
+    "month": 3,
+    "day": 31,
+    "headline": "Military Coup in Brazil",
+    "text": "Right-wing coup leads to the arrest of 9 Chinese representatives, severely damaging China's position in Latin America's largest nation.",
+    "img": "",
+    "group": "LatAm"
+  },
+  {
+    "year": 1965,
+    "month": null,
+    "day": null,
+    "headline": "Phase II: Radicalization & Armed Struggle",
+    "text": "(Mid-late 1960s) Influenced by the Cultural Revolution, China advocates for rural guerrilla warfare across Latin America.",
+    "img": "https://images.jacobinmag.com/wp-content/uploads/2021/05/28195018/FMLN.jpg",
+    "group": "Historiography",
+    "type": "era"
+  },
+  {
+    "year": 1966,
+    "month": 1,
+    "day": null,
+    "headline": "Tricontinental Conference",
+    "text": "Tensions between China, USSR, and Cuba go public. China begins criticizing Castro as a revisionist, deepening fractures within the Latin American left.",
+    "img": "https://static.wixstatic.com/media/04042e_d34152b8224e44bbb14d2227a4424ba8~mv2.png/v1/fill/w_1000,h_758,al_c,q_90,usm_0.66_1.00_0.01/04042e_d34152b8224e44bbb14d2227a4424ba8~mv2.png",
+    "group": "China/USSR"
+  },
+  {
+    "year": 1966,
+    "month": 5,
+    "day": null,
+    "headline": "Start of the Cultural Revolution",
+    "text": "Foreign policy turns ultra-left; diplomats are recalled and Mao Thought export becomes the primary diplomatic theme. China's outreach to Latin America becomes ideologically rigid.",
+    "img": "",
+    "group": "China"
+  },
+  {
+    "year": 1967,
+    "month": 10,
+    "day": 9,
+    "headline": "Death of Che Guevara",
+    "text": "Guevara's failure marks the decline of foco theory. China begins re-evaluating adventurist revolutionary lines and its support for armed struggle in Latin America.",
+    "img": "",
+    "group": "LatAm"
+  },
+  {
+    "year": 1969,
+    "month": null,
+    "day": null,
+    "headline": "Phase III: Flexibility & Expansion",
+    "text": "(1969–1972) China returns to pragmatic diplomacy, emphasizing Third World solidarity. The dawn of what Wang Hui calls Depoliticized Politics.",
+    "img": "https://www.pbs.org/wgbh/americanexperience/media/filer_public_thumbnails/filer_public/a6/aa/a6aa3f8a-0a4d-46bc-a3d7-422bc364c59c/nixon-ping-pong-ap_7111050337.jpg__1000x672_q85_crop_subsampling-2.jpg",
+    "group": "Historiography",
+    "type": "era"
+  },
+  {
+    "year": 1969,
+    "month": 3,
+    "day": null,
+    "headline": "Zhenbao Island Incident",
+    "text": "Sino-Soviet border clash forces China to adjust its global strategy, moving toward a united front with the U.S. against the USSR.",
+    "img": "",
+    "group": "China/USSR"
+  },
+  {
+    "year": 1970,
+    "month": 9,
+    "day": 4,
+    "headline": "Salvador Allende Elected",
+    "text": "Allende takes power via democratic elections. China recognizes the strategic value of a legitimate left-wing government. Chile becomes the first South American nation to recognize the PRC.",
+    "img": "https://nsarchive.gwu.edu/sites/default/files/styles/wide/public/thumbnails/image/allende-street.jpg?itok=h4kCsDeU",
+    "group": "LatAm"
+  },
+  {
+    "year": 1971,
+    "month": 7,
+    "day": 9,
+    "headline": "Kissinger's Secret Visit to China",
+    "text": "U.S. policy toward China softens, effectively removing the political taboo for Latin American nations to engage with Beijing.",
+    "img": "https://moderndiplomacy.eu/wp-content/uploads/2024/09/kissinger-china.jpg",
+    "group": "USA"
+  },
+  {
+    "year": 1971,
+    "month": 10,
+    "day": 25,
+    "headline": "PRC Enters the United Nations",
+    "text": "UN Resolution 2758 passes with crucial support from Latin American votes, granting the PRC official international standing and ending two decades of isolation.",
+    "img": "https://www.globaltimes.cn/Portals/0/attachment/2021/2021-10-24/d6f41ba0-bacc-41a6-9e4d-a87b7703b58d.jpeg",
+    "group": "China"
+  },
+  {
+    "year": 1972,
+    "month": 2,
+    "day": 21,
+    "headline": "Nixon Visits China",
+    "text": "Normalization of Sino-U.S. ties. China returns to Latin America as a Third World leader and anti-hegemonic partner, completing the arc from revolutionary exporter to pragmatic state actor.",
+    "img": "https://gwtoday.gwu.edu/sites/g/files/zaxdzs5401/files/image/51232033330_0205fbe9f6_b.jpeg",
+    "group": "USA"
+  }
+];
 
-// Build nav
-SECTIONS.forEach((sec, i) => {
-  const li = document.createElement('li');
+const GROUP_COLORS = {"Core": "#8b1a1a", "China": "#c0392b", "LatAm": "#2c6e49", "USSR": "#1a3a5c", "China/LatAm": "#7d5a00", "China/USSR": "#5a2d82", "USA": "#444444", "Historiography": "#888888"};
+
+
+
+const NAV_ITEMS = [
+  ...SECTIONS.map((s, i) => ({ type: 'section', index: i, num: s.num, title: s.title })),
+  { type: 'timeline', num: null, title: 'Cronología 1949\u20131972' },
+];
+
+const navList = document.getElementById('nav-list');
+const cover   = document.getElementById('cover');
+const reader  = document.getElementById('reader');
+const tlView  = document.getElementById('timeline-view');
+const backTop = document.getElementById('back-top');
+let currentIndex = null;
+
+NAV_ITEMS.forEach((item, i) => {
+  const li  = document.createElement('li');
   const btn = document.createElement('button');
-  btn.dataset.index = i;
-
-  const numEl = document.createElement('span');
+  btn.dataset.navIndex = i;
+  const numEl   = document.createElement('span');
   numEl.className = 'nav-num';
-  numEl.textContent = sec.num ? `Capítulo ${sec.num}` : 'Apéndice';
-
+  numEl.textContent = item.type === 'timeline' ? 'Contexto histórico' : (item.num ? 'Capítulo ' + item.num : 'Apéndice');
   const titleEl = document.createElement('span');
   titleEl.className = 'nav-title';
-  // Shorten long titles for nav
-  const shortTitle = sec.title.length > 40
-    ? sec.title.slice(0, 38) + '…'
-    : sec.title;
-  titleEl.textContent = shortTitle;
-
+  titleEl.textContent = item.title.length > 40 ? item.title.slice(0, 38) + '\u2026' : item.title;
   btn.appendChild(numEl);
   btn.appendChild(titleEl);
-  btn.addEventListener('click', () => showSection(i));
+  btn.addEventListener('click', () => item.type === 'timeline' ? showTimeline(i) : showSection(item.index, i));
   li.appendChild(btn);
   navList.appendChild(li);
 });
 
-let currentIndex = null;
+function setActive(idx) {
+  document.querySelectorAll('#nav-list button').forEach((b, i) => b.classList.toggle('active', i === idx));
+}
+function hideAll() { cover.style.display='none'; reader.style.display='none'; tlView.style.display='none'; }
 
-function showSection(i) {
-  const sec = SECTIONS[i];
-
-  // Update active state
-  document.querySelectorAll('#nav-list button').forEach((b, idx) => {
-    b.classList.toggle('active', idx === i);
-  });
-
-  // Fill reader
-  reader.innerHTML = sec.html;
-  cover.style.display = 'none';
+function showSection(sIdx, navIdx) {
+  setActive(navIdx); hideAll();
+  reader.innerHTML = SECTIONS[sIdx].html;
   reader.style.display = 'block';
-
-  // Scroll to top
-  window.scrollTo({ top: 0, behavior: 'instant' });
-
-  currentIndex = i;
+  window.scrollTo({ top:0, behavior:'instant' });
+  currentIndex = navIdx;
 }
 
-// Back-to-top visibility
-window.addEventListener('scroll', () => {
-  backTop.classList.toggle('visible', window.scrollY > 600);
-});
-backTop.addEventListener('click', () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+function fmtDate(e) {
+  const M = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let s = String(e.year);
+  if (e.month) s = M[e.month] + ' ' + s;
+  if (e.day)   s = e.day + ' ' + s;
+  return s;
+}
 
-// Keyboard: left/right arrow to move between chapters
+function showTimeline(navIdx) {
+  setActive(navIdx); hideAll();
+  const allGroups = [...new Set(TIMELINE.map(e => e.group))];
+  let activeFilters = new Set(['all']);
+
+  function groupTag(g) {
+    const c = GROUP_COLORS[g] || '#888';
+    return '<span class="tl-group-tag" style="background:' + c + '">' + g + '</span>';
+  }
+
+  function render() {
+    const filterAll = activeFilters.has('all');
+    let h = '<div class="tl-header"><span class="cap-label">Contexto hist\u00f3rico</span><h2>Cronolog\u00eda 1949\u20131972</h2><p>China y Am\u00e9rica Latina durante la Guerra Fr\u00eda: de la diplomacia popular a la realpolitik.</p></div>';
+    h += '<div class="tl-filters"><span>Filtrar:</span>';
+    h += '<button class="filter-btn' + (filterAll ? ' active' : '') + '" data-filter="all">Todos</button>';
+    allGroups.forEach(g => {
+      const c = GROUP_COLORS[g] || '#888';
+      const on = !filterAll && activeFilters.has(g);
+      h += '<button class="filter-btn' + (on ? ' active' : '') + '" data-filter="' + g + '"' + (on ? ' style="background:' + c + ';border-color:' + c + ';color:#fff"' : '') + '>' + g + '</button>';
+    });
+    h += '</div><div class="tl-spine">';
+
+    TIMELINE.forEach(e => {
+      const vis = filterAll || activeFilters.has(e.group);
+      const dc  = GROUP_COLORS[e.group] || '#888';
+      if (e.type === 'era') {
+        h += '<div class="tl-era' + (vis ? '' : ' hidden') + '"><div class="tl-era-dot" style="background:' + dc + '"></div><div class="tl-era-label">' + e.year + '</div><div class="tl-era-title">' + e.headline + '</div></div>';
+      } else {
+        const img = e.img ? '<img class="tl-event-img" src="' + e.img + '" alt="" loading="lazy" onerror="this.classList.add(\'hidden-img\')">' : '';
+        h += '<div class="tl-event' + (vis ? '' : ' hidden') + '"><div class="tl-dot" style="background:' + dc + '"></div><div class="tl-event-body"><div class="tl-date">' + fmtDate(e) + ' ' + groupTag(e.group) + '</div><h3>' + e.headline + '</h3><p>' + e.text + '</p></div>' + img + '</div>';
+      }
+    });
+    h += '</div>';
+    tlView.innerHTML = h;
+
+    tlView.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const f = btn.dataset.filter;
+        if (f === 'all') { activeFilters = new Set(['all']); }
+        else {
+          activeFilters.delete('all');
+          if (activeFilters.has(f)) activeFilters.delete(f); else activeFilters.add(f);
+          if (activeFilters.size === 0) activeFilters = new Set(['all']);
+        }
+        render();
+      });
+    });
+  }
+
+  render();
+  tlView.style.display = 'block';
+  window.scrollTo({ top:0, behavior:'instant' });
+  currentIndex = navIdx;
+}
+
+window.addEventListener('scroll', () => backTop.classList.toggle('visible', window.scrollY > 600));
+backTop.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+
 document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight' && currentIndex !== null && currentIndex < SECTIONS.length - 1) {
-    showSection(currentIndex + 1);
+  const total = NAV_ITEMS.length;
+  if (e.key === 'ArrowRight' && currentIndex !== null && currentIndex < total - 1) {
+    const n = NAV_ITEMS[currentIndex + 1];
+    n.type === 'timeline' ? showTimeline(currentIndex + 1) : showSection(n.index, currentIndex + 1);
   }
   if (e.key === 'ArrowLeft' && currentIndex !== null && currentIndex > 0) {
-    showSection(currentIndex - 1);
+    const p = NAV_ITEMS[currentIndex - 1];
+    p.type === 'timeline' ? showTimeline(currentIndex - 1) : showSection(p.index, currentIndex - 1);
   }
 });
+
 </script>
 </body>
 </html>
