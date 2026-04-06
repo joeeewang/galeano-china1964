@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glossary — Journey against the Sun</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IM+Fell+English:ital@0;1&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:        #f7f4ef;
+  --ink:       #1a1713;
+  --ink-light: #5a5248;
+  --rule:      #c8bfb0;
+  --accent:    #8b1a1a;
+  --sidebar-w: 260px;
+  --font-body: "Cormorant Garamond", Georgia, serif;
+  --font-head: "IM Fell English", Georgia, serif;
+  --font-ui:   "Jost", sans-serif;
+}
+html { font-size: 18px; scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); display: flex; min-height: 100vh; }
+
+/* ── SIDEBAR ── */
+#sidebar {
+  width: var(--sidebar-w); min-height: 100vh; background: var(--ink);
+  color: #e8e2d8; display: flex; flex-direction: column;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0;
+}
+.sidebar-top {
+  padding: 2rem 1.5rem 1.2rem;
+  border-bottom: 1px solid #2a2520;
+}
+.back-link {
+  font-family: var(--font-ui); font-weight: 300; font-size: 0.62rem;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: #7a6e62; text-decoration: none;
+  display: block; margin-bottom: 1rem;
+  transition: color 0.15s;
+}
+.back-link:hover { color: #b0a898; }
+.sidebar-title {
+  font-family: var(--font-head); font-style: italic;
+  font-size: 1.05rem; color: #f0ebe2; line-height: 1.3;
+  margin-bottom: 0.2rem;
+}
+.sidebar-sub {
+  font-family: var(--font-ui); font-weight: 300; font-size: 0.62rem;
+  letter-spacing: 0.12em; text-transform: uppercase; color: #6a6058;
+}
+nav { padding: 1rem 0; flex: 1; }
+nav ul { list-style: none; }
+nav li { border-bottom: 1px solid #1e1a16; }
+.nav-entry {
+  display: flex; align-items: center; gap: 0.7rem;
+  padding: 0.7rem 1.5rem;
+  text-decoration: none; color: #a09888;
+  font-family: var(--font-ui); font-size: 0.78rem;
+  transition: background 0.15s, color 0.15s;
+}
+.nav-entry:hover { background: #252220; color: #e8e2d8; }
+.nav-entry.active { background: #252220; color: #e8e2d8; }
+.nav-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.nav-label { line-height: 1.35; }
+
+/* ── MAIN ── */
+#main {
+  flex: 1; min-width: 0;
+  padding: 3.5rem 4vw 6rem;
+  max-width: 760px;
+}
+.page-header {
+  margin-bottom: 3rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+.page-header .cap-label {
+  font-family: var(--font-ui); font-weight: 400;
+  font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); display: block; margin-bottom: 0.5rem;
+}
+.page-header h1 {
+  font-family: var(--font-head); font-style: italic;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem); line-height: 1.2;
+}
+.page-header p {
+  margin-top: 0.6rem; font-size: 0.88rem;
+  color: var(--ink-light); line-height: 1.6;
+}
+
+/* ── ENTRY ── */
+.entry {
+  margin-bottom: 0;
+  padding: 2.5rem 0;
+  border-bottom: 1px solid var(--rule);
+  scroll-margin-top: 2rem;
+  animation: fadeIn 0.25s ease;
+}
+.entry:last-child { border-bottom: none; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+.entry-head { margin-bottom: 1.1rem; }
+.entry-meta { margin-bottom: 0.5rem; }
+.entry-badge {
+  font-family: var(--font-ui); font-size: 0.62rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.2rem 0.6rem; border-radius: 2px;
+  font-weight: 500;
+}
+.entry-name {
+  font-family: var(--font-head); font-style: italic;
+  font-size: clamp(1.4rem, 2.8vw, 2rem); line-height: 1.2;
+  color: var(--ink);
+}
+.entry-name .zh {
+  font-style: normal; font-family: var(--font-ui); font-weight: 300;
+  font-size: 0.65em; color: var(--ink-light); margin-left: 0.4rem;
+  vertical-align: middle;
+}
+.entry-dates {
+  font-family: var(--font-ui); font-weight: 300; font-size: 0.72rem;
+  letter-spacing: 0.08em; color: var(--ink-light); margin-top: 0.25rem;
+}
+.entry-notes {
+  font-size: 1rem; line-height: 1.82; color: var(--ink);
+  margin-bottom: 1.5rem;
+  text-align: justify; hyphens: auto; -webkit-hyphens: auto;
+}
+
+/* Connections */
+.conn-section { margin-bottom: 1.2rem; }
+.conn-label {
+  font-family: var(--font-ui); font-size: 0.62rem;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--ink-light); margin-bottom: 0.5rem;
+}
+.conn-list { list-style: none; display: flex; flex-direction: column; gap: 0.3rem; }
+.conn-list li {
+  font-size: 0.85rem; color: var(--ink-light);
+  display: flex; align-items: baseline; gap: 0.4rem;
+}
+.conn-rel {
+  font-family: var(--font-ui); font-size: 0.72rem;
+  letter-spacing: 0.04em; color: #9a8e82; flex-shrink: 0;
+}
+.conn-name {
+  color: var(--accent); text-decoration: none;
+  font-family: var(--font-body);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s;
+}
+.conn-name:hover { border-bottom-color: var(--accent); }
+
+/* External links */
+.entry-links {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+.ext-link, .net-link {
+  font-family: var(--font-ui); font-weight: 400;
+  font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+  text-decoration: none; padding: 0.35rem 0.8rem;
+  border: 1px solid var(--rule);
+  color: var(--ink-light);
+  transition: all 0.15s; border-radius: 2px;
+}
+.ext-link:hover { background: var(--ink); color: #f0ebe2; border-color: var(--ink); }
+.net-link {
+  border-color: rgba(139,26,26,0.3); color: var(--accent);
+}
+.net-link:hover { background: var(--accent); color: #f5ede8; border-color: var(--accent); }
+
+/* Mobile */
+@media (max-width: 640px) {
+  body { flex-direction: column; }
+  #sidebar { width: 100%; min-height: auto; height: auto; position: relative; }
+  nav ul { display: flex; overflow-x: auto; }
+  nav li { border-bottom: none; border-right: 1px solid #1e1a16; flex-shrink: 0; }
+  .nav-entry { padding: 0.7rem 1rem; min-width: 140px; }
+  #main { padding: 2rem 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<aside id="sidebar">
+  <div class="sidebar-top">
+    <a href="index.html" class="back-link">← Journey against the Sun</a>
+    <div class="sidebar-title">Glossary</div>
+    <div class="sidebar-sub">People &amp; Organizations</div>
+  </div>
+  <nav>
+    <ul>
+<li><a href="#galeano" class="nav-entry" data-slug="galeano"><span class="nav-dot" style="background:#0F6E56"></span><span class="nav-label">Eduardo Galeano</span></a></li>
+<li><a href="#bernhard" class="nav-entry" data-slug="bernhard"><span class="nav-dot" style="background:#0F6E56"></span><span class="nav-label">Guillermo Bernhard</span></a></li>
+<li><a href="#zhou-enlai" class="nav-entry" data-slug="zhou-enlai"><span class="nav-dot" style="background:#993C1D"></span><span class="nav-label">Zhou Enlai 周恩来</span></a></li>
+<li><a href="#marcha" class="nav-entry" data-slug="marcha"><span class="nav-dot" style="background:#0F6E56"></span><span class="nav-label">Marcha</span></a></li>
+<li><a href="#epoca" class="nav-entry" data-slug="epoca"><span class="nav-dot" style="background:#0F6E56"></span><span class="nav-label">Época</span></a></li>
+<li><a href="#psu" class="nav-entry" data-slug="psu"><span class="nav-dot" style="background:#0F6E56"></span><span class="nav-label">PSU</span></a></li>
+<li><a href="#stb" class="nav-entry" data-slug="stb"><span class="nav-dot" style="background:#854F0B"></span><span class="nav-label">StB</span></a></li>
+<li><a href="#reference-news" class="nav-entry" data-slug="reference-news"><span class="nav-dot" style="background:#993C1D"></span><span class="nav-label">Reference News 参考消息</span></a></li>
+
+    </ul>
+  </nav>
+</aside>
+
+<main id="main">
+  <div class="page-header">
+    <span class="cap-label">Reference</span>
+    <h1>People &amp; Organizations</h1>
+    <p>Key figures and institutions in the 1963 China journey and its broader context. Data drawn from primary sources and archival research; notes will be expanded as research progresses.</p>
+  </div>
+
+
+    <article class="entry" id="galeano">
+      <div class="entry-head">
+        <div class="entry-meta">
+          <span class="entry-badge" style="background:#E1F5EE;color:#04342C;border:1px solid #0F6E56">Person · Uruguay</span>
+        </div>
+        <h2 class="entry-name">Eduardo Galeano</h2>
+        <div class="entry-dates">1940–2015</div>
+      </div>
+      <div class="entry-body">
+        <p class="entry-notes">Journalist, editorial secretary at Marcha. Editor-in-chief at Época (1963). Author of China 1964: Crónica de un Desafío (1964) — his first book, and the first account of the journey. Traveled through China from late September to early November 1963, visiting Beijing, Wuhan, Hangzhou, Shanghai, and Guangzhou. Conducted 24 interviews, including with Premier Zhou Enlai and the former Last Emperor Puyi. Maintained a skeptical, journalistic stance — committed to producing neither "slander nor dithyramb." Chinese officials classified him as a "non-party person" and "cautious and skeptical." China 1964 was never translated or published in mainland China, Hong Kong, or Taiwan.</p>
+        <div class="conn-section"><div class="conn-label">Connections</div><ul class="conn-list"><li><span class="conn-rel">traveled with</span> <a href="glossary.html#bernhard" class="conn-name">Guillermo Bernhard</a></li><li><span class="conn-rel">employed at</span> <a href="glossary.html#marcha" class="conn-name">Marcha</a></li><li><span class="conn-rel">editor-in-chief</span> <a href="glossary.html#epoca" class="conn-name">Época</a></li><li><span class="conn-rel">member of</span> <a href="glossary.html#psu" class="conn-name">PSU</a></li><li><span class="conn-rel">received by</span> <a href="glossary.html#zhou-enlai" class="conn-name">Zhou Enlai</a></li></ul></div>
+        <div class="entry-links"><a href="https://en.wikipedia.org/wiki/Eduardo_Galeano" target="_blank" class="ext-link">Wikipedia ↗</a><a href="network.html?highlight=galeano" class="net-link">View in network ↗</a></div>
+      </div>
+    </article>
+
+    <article class="entry" id="bernhard">
+      <div class="entry-head">
+        <div class="entry-meta">
+          <span class="entry-badge" style="background:#E1F5EE;color:#04342C;border:1px solid #0F6E56">Person · Uruguay</span>
+        </div>
+        <h2 class="entry-name">Guillermo Bernhard</h2>
+        <div class="entry-dates">c. 1930s–</div>
+      </div>
+      <div class="entry-body">
+        <p class="entry-notes">Economist and agronomist. Traveled with Galeano throughout China in fall 1963. Made first contact with the Czechoslovak intelligence agency (StB) in January 1963 — the same year as the journey. Became chairman of Época in late 1964 and a formal StB agent in 1965. His travelogue Crónicas Chinas, published in Época between November 8–18, 1963, affirmed Chinese official claims on every point the state was most actively promoting: the stability of people's communes, agricultural recovery, and Soviet inadequacy. Was selected and translated by Reference News editors, placed on the front page on January 3, 1964. Galeano was unaware of Bernhard's intelligence connections.</p>
+        <div class="conn-section"><div class="conn-label">Connections</div><ul class="conn-list"><li><span class="conn-rel">traveled with</span> <a href="glossary.html#galeano" class="conn-name">Eduardo Galeano</a></li><li><span class="conn-rel">chairman of</span> <a href="glossary.html#epoca" class="conn-name">Época</a></li><li><span class="conn-rel">intelligence contact</span> <a href="glossary.html#stb" class="conn-name">StB</a></li><li><span class="conn-rel">published by</span> <a href="glossary.html#reference-news" class="conn-name">Reference News (参考消息)</a></li><li><span class="conn-rel">member of</span> <a href="glossary.html#psu" class="conn-name">PSU</a></li></ul></div>
+        <div class="entry-links"><a href="network.html?highlight=bernhard" class="net-link">View in network ↗</a></div>
+      </div>
+    </article>
+
+    <article class="entry" id="zhou-enlai">
+      <div class="entry-head">
+        <div class="entry-meta">
+          <span class="entry-badge" style="background:#FAECE7;color:#4A1B0C;border:1px solid #993C1D">Person · China</span>
+        </div>
+        <h2 class="entry-name">Zhou Enlai <span class="zh">周恩来</span></h2>
+        <div class="entry-dates">1898–1976</div>
+      </div>
+      <div class="entry-body">
+        <p class="entry-notes">Premier of the People's Republic of China (1949–1976). Received Galeano in an exclusive interview on November 4, 1963, at the Beijing Hotel — lasting one hour and thirty minutes. Discussed China's exclusion from the United Nations, revolutionary movements in Asia, Africa, and Latin America, the limits of Soviet-American coexistence, and China's nuclear program. Also present were Zhou Erfu and Ren Yinglun. Galeano had repeatedly requested a meeting with Mao Zedong; the Zhou interview was likely arranged as a compromise. The meeting was recorded on the front page of People's Daily on November 5, 1963.</p>
+        <div class="conn-section"><div class="conn-label">Connections</div><ul class="conn-list"><li><span class="conn-rel">received</span> <a href="glossary.html#galeano" class="conn-name">Eduardo Galeano</a></li></ul></div>
+        <div class="entry-links"><a href="https://en.wikipedia.org/wiki/Zhou_Enlai" target="_blank" class="ext-link">Wikipedia ↗</a><a href="network.html?highlight=zhou-enlai" class="net-link">View in network ↗</a></div>
+      </div>
+    </article>
+
+    <article class="entry" id="marcha">
+      <div class="entry-head">
+        <div class="entry-meta">
+          <span class="entry-badge" style="background:#E1F5EE;color:#04342C;border:1px solid #0F6E56">Organization · Uruguay</span>
+        </div>
+        <h2 class="entry-name">Marcha</h2>
+        <div class="entry-dates">Est. 1939–1974</div>
+      </div>
+      <div class="entry-body">
+        <p class="entry-notes">Independent left-wing weekly newspaper based in Montevideo, Uruguay. Founded and directed by Carlos Quijano. One of the most influential publications of the Latin American left in the mid-twentieth century. Known for its strong editorial independence: Quijano repeatedly refused to run StB-paid articles, in contrast to Época. Galeano served as editorial secretary and later as a key contributor. The paper was shut down by the Uruguayan military dictatorship in 1974.</p>
+        <div class="conn-section"><div class="conn-label">Connections</div><ul class="conn-list"><li><span class="conn-rel">employed</span> <a href="glossary.html#galeano" class="conn-name">Eduardo Galeano</a></li><li><span class="conn-rel">contributed to by</span> <a href="glossary.html#bernhard" class="conn-name">Guillermo Bernhard</a></li></ul></div>
+        <div class="entry-links"><a href="https://en.wikipedia.org/wiki/Marcha_(newspaper)" target="_blank" class="ext-link">Wikipedia ↗</a><a href="network.html?highlight=marcha" class="net-link">View in network ↗</a></div>
+      </div>
+    </article>
+
+    <article class="entry" id="epoca">
+      <div class="entry-head">
+        <div class="entry-meta">
+          <span class="entry-badge" style="background:#E1F5EE;color:#04342C;border:1px solid #0F6E56">Organization · Uruguay</span>
+        </div>
+        <h2 class="entry-name">Época</h2>
+        <div class="entry-dates">Est. 1962–1967</div>
+      </div>
+      <div class="entry-body">
+        <p class="entry-notes">Left-wing daily newspaper based in Montevideo, Uruguay (1962–1967). Edited by Galeano in 1963; later chaired by Bernhard (from late 1964). Funded by multiple sources: Cuban and Brazilian exile networks, and suspected Chinese economic support. Infiltrated by the Czechoslovak intelligence agency StB, which used the paper to promote pro-communist sentiment and discredit the United States across Latin America. Shut down in December 1967. Its compromised editorial independence stands in direct contrast to the weekly Marcha.</p>
+        <div class="conn-section"><div class="conn-label">Connections</div><ul class="conn-list"><li><span class="conn-rel">editor-in-chief</span> <a href="glossary.html#galeano" class="conn-name">Eduardo Galeano</a></li><li><span class="conn-rel">chairman</span> <a href="glossary.html#bernhard" class="conn-name">Guillermo Bernhard</a></li><li><span class="conn-rel">infiltrated by</span> <a href="glossary.html#stb" class="conn-name">StB</a></li></ul></div>
+        <div class="entry-links"><a href="network.html?highlight=epoca" class="net-link">View in network ↗</a></div>
+      </div>
+    </article>
+
+    <article class="entry" id="psu">
+      <div class="entry-head">
+        <div class="entry-meta">
+          <span class="entry-badge" style="background:#E1F5EE;color:#04342C;border:1px solid #0F6E56">Organization · Uruguay</span>
+        </div>
+        <h2 class="entry-name">PSU</h2>
+        <div class="entry-dates">Est. 1910–present</div>
+      </div>
+      <div class="entry-body">
+        <p class="entry-notes">Partido Socialista del Uruguay (Uruguayan Socialist Party). Founded in 1910. Galeano, Bernhard, and Carlos Machado were all members. The PSU occupied a distinctive position within the Uruguayan left, separate from both the Moscow-aligned PCU (Communist Party of Uruguay) and the Cuban-oriented Movimiento de Liberación Nacional. Its members navigated the ideological confusion produced by the Sino-Soviet split with varying degrees of alignment.</p>
+        <div class="conn-section"><div class="conn-label">Connections</div><ul class="conn-list"><li><span class="conn-rel">member</span> <a href="glossary.html#galeano" class="conn-name">Eduardo Galeano</a></li><li><span class="conn-rel">member</span> <a href="glossary.html#bernhard" class="conn-name">Guillermo Bernhard</a></li></ul></div>
+        <div class="entry-links"><a href="https://en.wikipedia.org/wiki/Socialist_Party_of_Uruguay" target="_blank" class="ext-link">Wikipedia ↗</a><a href="network.html?highlight=psu" class="net-link">View in network ↗</a></div>
+      </div>
+    </article>
+
+    <article class="entry" id="stb">
+      <div class="entry-head">
+        <div class="entry-meta">
+          <span class="entry-badge" style="background:#FAEEDA;color:#412402;border:1px solid #854F0B">Organization · Czechoslovakia</span>
+        </div>
+        <h2 class="entry-name">StB</h2>
+        <div class="entry-dates">Est. 1945–1990</div>
+      </div>
+      <div class="entry-body">
+        <p class="entry-notes">Státní bezpečnost — Czechoslovak State Security (1945–1990). Operated under Soviet oversight within the Eastern Bloc intelligence network. Established its first Montevideo station in 1961. Used local Latin American newspapers, including Época, to discredit the United States and promote pro-communist sentiment. Made first contact with Guillermo Bernhard in January 1963; Bernhard became a formal agent in 1965. Although the StB operated under Soviet oversight, it apparently tolerated Bernhard's pro-China content in Época — likely because its primary interest was anti-American propaganda, not policing the Sino-Soviet dispute. Source: Michal Zourek, JLAS (2024), using declassified StB archives.</p>
+        <div class="conn-section"><div class="conn-label">Connections</div><ul class="conn-list"><li><span class="conn-rel">recruited</span> <a href="glossary.html#bernhard" class="conn-name">Guillermo Bernhard</a></li><li><span class="conn-rel">infiltrated</span> <a href="glossary.html#epoca" class="conn-name">Época</a></li></ul></div>
+        <div class="entry-links"><a href="https://en.wikipedia.org/wiki/Stb" target="_blank" class="ext-link">Wikipedia ↗</a><a href="network.html?highlight=stb" class="net-link">View in network ↗</a></div>
+      </div>
+    </article>
+
+    <article class="entry" id="reference-news">
+      <div class="entry-head">
+        <div class="entry-meta">
+          <span class="entry-badge" style="background:#FAECE7;color:#4A1B0C;border:1px solid #993C1D">Organization · China</span>
+        </div>
+        <h2 class="entry-name">Reference News <span class="zh">参考消息</span></h2>
+        <div class="entry-dates">Est. 1931–present</div>
+      </div>
+      <div class="entry-body">
+        <p class="entry-notes">参考消息 (Cānkǎo Xiāoxi). Party-state internal publication providing senior officials and cadres with direct, unedited translations of foreign press reports — offering a rare window into global perspectives. On January 3, 1964, its editors selected and translated Bernhard's travelogue Crónicas Chinas, placing it on the front page alongside a translated New York Times commentary describing 1963 as a year of failures for both the United States and the Soviet Union. This editorial juxtaposition recruited Bernhard's voice into a larger argument about China's rise as the Third World's leading power. Galeano's China 1964, by contrast, received no coverage.</p>
+        <div class="conn-section"><div class="conn-label">Connections</div><ul class="conn-list"><li><span class="conn-rel">published travelogue of</span> <a href="glossary.html#bernhard" class="conn-name">Guillermo Bernhard</a></li></ul></div>
+        <div class="entry-links"><a href="https://en.wikipedia.org/wiki/Reference_News" target="_blank" class="ext-link">Wikipedia ↗</a><a href="network.html?highlight=reference-news" class="net-link">View in network ↗</a></div>
+      </div>
+    </article>
+</main>
+
+<script>
+// Highlight active nav item based on scroll position
+const entries = document.querySelectorAll(".entry");
+const navLinks = document.querySelectorAll(".nav-entry");
+
+function updateActive() {
+  let current = null;
+  entries.forEach(e => {
+    const top = e.getBoundingClientRect().top;
+    if (top <= 120) current = e.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle("active", a.dataset.slug === current);
+  });
+}
+
+window.addEventListener("scroll", updateActive, { passive: true });
+updateActive();
+
+// Click nav → smooth scroll
+navLinks.forEach(a => {
+  a.addEventListener("click", e => {
+    e.preventDefault();
+    const slug = a.dataset.slug;
+    const target = document.getElementById(slug);
+    if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
+
+// Open to anchor on load
+const hash = location.hash.slice(1);
+if (hash) {
+  setTimeout(() => {
+    const t = document.getElementById(hash);
+    if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 120);
+}
+</script>
+</body>
+</html>
