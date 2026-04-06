@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network — Galeano & Bernhard in China, 1963</title>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:#f5f3ee;color:#1a1a1a;height:100vh;overflow:hidden}
+#app{display:flex;height:100vh}
+
+/* ── Sidebar ── */
+.sidebar{width:370px;min-width:280px;background:#fff;border-right:1px solid #e0ddd6;display:flex;flex-direction:column;overflow:hidden}
+.sidebar-header{padding:18px 18px 13px;border-bottom:1px solid #e0ddd6}
+.sidebar-header h1{font-size:14px;font-weight:500;letter-spacing:0.04em;color:#1a1a1a}
+.sidebar-header p{font-size:11px;color:#888;margin-top:3px;font-family:system-ui,sans-serif}
+.tabs{display:flex;border-bottom:1px solid #e0ddd6}
+.tab-btn{flex:1;padding:9px;font-size:11px;font-family:system-ui,sans-serif;background:none;border:none;cursor:pointer;color:#888;border-bottom:2px solid transparent;transition:all 0.15s}
+.tab-btn.active{color:#1a1a1a;border-bottom-color:#1a1a1a;font-weight:500}
+.tab-content{flex:1;overflow-y:auto;display:none}
+.tab-content.active{display:block}
+
+/* ── Tables ── */
+.table-wrapper{overflow-x:auto}
+table.dt{width:100%;border-collapse:collapse;font-size:11px;font-family:system-ui,sans-serif}
+table.dt th{padding:7px 5px;text-align:left;font-weight:500;color:#888;border-bottom:1px solid #e0ddd6;white-space:nowrap;background:#faf9f6;position:sticky;top:0;z-index:1;font-size:10px;letter-spacing:0.05em;text-transform:uppercase}
+table.dt td{padding:2px 3px;border-bottom:1px solid #f0ede6;vertical-align:middle}
+table.dt td input,table.dt td select{width:100%;padding:4px 4px;font-size:11px;font-family:system-ui,sans-serif;background:transparent;border:none;color:#1a1a1a;outline:none}
+table.dt td input:focus,table.dt td select:focus{background:#f5f3ee;border-radius:3px}
+.del-btn{background:none;border:none;cursor:pointer;color:#ccc;font-size:14px;padding:2px 5px;line-height:1}
+.del-btn:hover{color:#e24b4a}
+.add-row-btn{display:block;width:100%;padding:9px 14px;font-size:11px;font-family:system-ui,sans-serif;background:none;border:none;border-top:1px solid #e0ddd6;color:#888;cursor:pointer;text-align:left}
+.add-row-btn:hover{background:#faf9f6;color:#1a1a1a}
+
+/* ── Footer ── */
+.sidebar-footer{padding:10px 14px;border-top:1px solid #e0ddd6;display:flex;gap:8px;align-items:center}
+.render-btn{flex:1;padding:9px;font-size:12px;font-family:system-ui,sans-serif;background:#1a1a1a;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:500}
+.render-btn:hover{background:#333}
+.render-btn:active{transform:scale(0.98)}
+.save-status{font-size:10px;color:#aaa;font-family:system-ui,sans-serif;white-space:nowrap}
+
+/* ── Network panel ── */
+.network-panel{flex:1;position:relative;overflow:hidden;background:#faf9f6}
+#net{width:100%;height:100%}
+.empty-state{display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;gap:8px;color:#aaa;font-family:system-ui,sans-serif;font-size:13px}
+
+/* ── Legend ── */
+.legend{position:absolute;bottom:16px;left:16px;background:#fff;border:1px solid #e0ddd6;border-radius:8px;padding:10px 13px;font-size:10px;font-family:system-ui,sans-serif;color:#666;display:none}
+.legend-title{font-weight:500;color:#1a1a1a;margin-bottom:6px;font-size:10px;letter-spacing:0.05em;text-transform:uppercase}
+.legend-item{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.l-dot{width:11px;height:11px;border-radius:50%;border:1.5px solid;flex-shrink:0}
+.l-box{width:11px;height:9px;border-radius:2px;flex-shrink:0}
+
+/* ── Info panel ── */
+.info-panel{position:absolute;top:16px;right:16px;background:#fff;border:1px solid #e0ddd6;border-radius:8px;padding:13px 15px;font-family:system-ui,sans-serif;max-width:210px;display:none;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.info-panel.vis{display:block}
+.info-name{font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:3px;padding-right:18px;font-family:Georgia,serif}
+.info-badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:10px;margin-bottom:8px}
+.info-notes{font-size:11px;color:#666;line-height:1.6;font-style:italic}
+.info-close{position:absolute;top:8px;right:10px;background:none;border:none;cursor:pointer;color:#bbb;font-size:16px;line-height:1}
+.info-close:hover{color:#666}
+
+/* ── Toolbar ── */
+.toolbar{position:absolute;top:16px;left:16px;display:flex;gap:6px}
+.tool-btn{background:#fff;border:1px solid #e0ddd6;border-radius:6px;padding:6px 10px;font-size:11px;font-family:system-ui,sans-serif;cursor:pointer;color:#666}
+.tool-btn:hover{background:#f5f3ee;color:#1a1a1a}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h1>Network Builder</h1>
+      <p>Galeano &amp; Bernhard in China, 1963</p>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('nodes')">Nodes</button>
+      <button class="tab-btn" onclick="switchTab('edges')">Edges</button>
+    </div>
+    <div class="tab-content active" id="nodes-tab">
+      <div class="table-wrapper">
+        <table class="dt">
+          <thead><tr><th>Name</th><th>Type</th><th>Group</th><th>Notes</th><th></th></tr></thead>
+          <tbody id="ntbody"></tbody>
+        </table>
+      </div>
+      <button class="add-row-btn" onclick="addNode()">+ Add node</button>
+    </div>
+    <div class="tab-content" id="edges-tab">
+      <div class="table-wrapper">
+        <table class="dt">
+          <thead><tr><th>From</th><th>To</th><th>Relationship</th><th></th></tr></thead>
+          <tbody id="etbody"></tbody>
+        </table>
+      </div>
+      <button class="add-row-btn" onclick="addEdge()">+ Add edge</button>
+    </div>
+    <div class="sidebar-footer">
+      <button class="render-btn" onclick="renderNet()">Render Network</button>
+      <span class="save-status" id="save-status"></span>
+    </div>
+  </div>
+
+  <div class="network-panel">
+    <div id="net">
+      <div class="empty-state">
+        <span>Click "Render Network" to generate graph</span>
+      </div>
+    </div>
+    <div class="toolbar">
+      <button class="tool-btn" onclick="network&&network.fit()">Fit view</button>
+      <button class="tool-btn" onclick="resetData()">Reset data</button>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="info-panel" id="infop">
+      <button class="info-close" onclick="closeInfo()">×</button>
+      <div class="info-name" id="iname"></div>
+      <div class="info-badge" id="ibadge"></div>
+      <div class="info-notes" id="inotes"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Color config ──────────────────────────────────────────────
+const COLORS = {
+  Uruguay:       { person: {bg:'#E1F5EE',bd:'#0F6E56',fc:'#04342C',hl:'#9FE1CB'}, organization: {bg:'#085041',bd:'#1D9E75',fc:'#E1F5EE',hl:'#0F6E56'} },
+  China:         { person: {bg:'#FAECE7',bd:'#993C1D',fc:'#4A1B0C',hl:'#F5C4B3'}, organization: {bg:'#712B13',bd:'#D85A30',fc:'#FAECE7',hl:'#993C1D'} },
+  Czechoslovakia:{ person: {bg:'#FAEEDA',bd:'#854F0B',fc:'#412402',hl:'#FAC775'}, organization: {bg:'#633806',bd:'#EF9F27',fc:'#FAEEDA',hl:'#854F0B'} },
+  Other:         { person: {bg:'#EEEDFE',bd:'#534AB7',fc:'#26215C',hl:'#CECBF6'}, organization: {bg:'#3C3489',bd:'#7F77DD',fc:'#EEEDFE',hl:'#534AB7'} }
+};
+function gc(g, t) { return (COLORS[g] || COLORS.Other)[t] || COLORS.Other.person; }
+
+// ── Default data ──────────────────────────────────────────────
+const DEFAULT_NODES = [
+  {id:1, name:'Eduardo Galeano',      type:'person',       group:'Uruguay',        notes:'Journalist, editorial secretary at Marcha. Editor-in-chief at Época (1963). Author of China 1964 (1964).'},
+  {id:2, name:'Guillermo Bernhard',   type:'person',       group:'Uruguay',        notes:'Economist, agronomist. Traveled with Galeano in 1963. StB contact from Jan 1963; formal agent from 1965.'},
+  {id:3, name:'Carlos Quijano',       type:'person',       group:'Uruguay',        notes:'Founder/chairman of Marcha. Repeatedly refused StB-paid articles. Recommended Galeano for Época editorship.'},
+  {id:4, name:'Carlos Machado',       type:'person',       group:'Uruguay',        notes:'Historian, journalist. PSU member. Contributor to Época and Marcha.'},
+  {id:5, name:'Vivián Trías',         type:'person',       group:'Uruguay',        notes:'Historian, PSU member. Intellectual mentor to Galeano, Bernhard, and Machado.'},
+  {id:6, name:'Vicente Rovetta',      type:'person',       group:'Uruguay',        notes:'Bookseller, publisher. Left PCU in June 1963 over support for Beijing. Three visits to China (1966, 1967, 1971).'},
+  {id:7, name:'Zhou Enlai',           type:'person',       group:'China',          notes:'Premier. Received Galeano on November 4, 1963. Discussed Cuban revolutionary path.'},
+  {id:8, name:'Bo Yibo',              type:'person',       group:'China',          notes:'Vice Premier. Received both Galeano and Bernhard on October 8, 1963.'},
+  {id:9, name:'Zhou Erfu',            type:'person',       group:'China',          notes:'Novelist, diplomat. Present at both the October and November receptions.'},
+  {id:10,name:'Chu Tunan',            type:'person',       group:'China',          notes:'President of Chinese People\'s Assoc. for Friendship with Foreign Countries.'},
+  {id:11,name:'Ren Yinglun',          type:'person',       group:'China',          notes:'Director, 3rd Bureau of Commission for Cultural Relations. Sec.-Gen. of China–Latin America Friendship Assoc.'},
+  {id:12,name:'Marcha',               type:'organization', group:'Uruguay',        notes:'Independent left-wing weekly (1939–1974). Strong editorial independence.'},
+  {id:13,name:'Época',                type:'organization', group:'Uruguay',        notes:'Left-wing daily (1962–1967). Funded by Cuban and Brazilian exile networks and suspected Chinese support. Shut down Dec 1967.'},
+  {id:14,name:'PSU',                  type:'organization', group:'Uruguay',        notes:'Uruguayan Socialist Party. Galeano, Bernhard, and Machado were all members.'},
+  {id:15,name:'StB',                  type:'organization', group:'Czechoslovakia', notes:'Czechoslovak State Security. Infiltrated Época. First Montevideo station established 1961.'},
+  {id:16,name:'Reference News',       type:'organization', group:'China',          notes:'Party-state internal publication. Published Bernhard travelogue front page, January 3, 1964.'},
+  {id:17,name:'Chinese People\'s Assoc. for Friendship', type:'organization', group:'China', notes:'Core institution managing foreign visitors. Parent body of China–Latin America Friendship Assoc.'},
+  {id:18,name:'China International Bookstore', type:'organization', group:'China', notes:'Book export agency. Latin America division est. 1957. Collaborated with Rovetta.'},
+];
+
+const DEFAULT_EDGES = [
+  {id:1,  from:'Eduardo Galeano',     to:'Guillermo Bernhard',                  rel:'traveled with'},
+  {id:2,  from:'Eduardo Galeano',     to:'Marcha',                              rel:'employed at'},
+  {id:3,  from:'Eduardo Galeano',     to:'Época',                               rel:'editor-in-chief'},
+  {id:4,  from:'Eduardo Galeano',     to:'PSU',                                 rel:'member of'},
+  {id:5,  from:'Guillermo Bernhard',  to:'Época',                               rel:'chairman of'},
+  {id:6,  from:'Guillermo Bernhard',  to:'Marcha',                              rel:'contributor to'},
+  {id:7,  from:'Guillermo Bernhard',  to:'StB',                                 rel:'intelligence contact'},
+  {id:8,  from:'Guillermo Bernhard',  to:'PSU',                                 rel:'member of'},
+  {id:9,  from:'Carlos Quijano',      to:'Marcha',                              rel:'directed'},
+  {id:10, from:'Carlos Quijano',      to:'Eduardo Galeano',                     rel:'recommended for Época'},
+  {id:11, from:'Carlos Machado',      to:'Época',                               rel:'contributor to'},
+  {id:12, from:'Vivián Trías',        to:'Eduardo Galeano',                     rel:'intellectual mentor'},
+  {id:13, from:'Vivián Trías',        to:'Guillermo Bernhard',                  rel:'intellectual mentor'},
+  {id:14, from:'StB',                 to:'Época',                               rel:'infiltrated / funded'},
+  {id:15, from:'Zhou Enlai',          to:'Eduardo Galeano',                     rel:'received (Nov 4, 1963)'},
+  {id:16, from:'Bo Yibo',             to:'Eduardo Galeano',                     rel:'received (Oct 8, 1963)'},
+  {id:17, from:'Bo Yibo',             to:'Guillermo Bernhard',                  rel:'received (Oct 8, 1963)'},
+  {id:18, from:'Zhou Erfu',           to:'Eduardo Galeano',                     rel:'accompanied'},
+  {id:19, from:'Chinese People\'s Assoc. for Friendship', to:'Eduardo Galeano', rel:'hosted'},
+  {id:20, from:'Chinese People\'s Assoc. for Friendship', to:'Guillermo Bernhard', rel:'hosted'},
+  {id:21, from:'Reference News',      to:'Guillermo Bernhard',                  rel:'published travelogue of'},
+  {id:22, from:'Vicente Rovetta',     to:'China International Bookstore',       rel:'collaborated with'},
+];
+
+// ── State ─────────────────────────────────────────────────────
+let nodes = [], edges = [], nid = 1, eid = 1, network = null;
+
+// ── localStorage ──────────────────────────────────────────────
+const STORAGE_KEY_NODES = 'galeano-network-nodes';
+const STORAGE_KEY_EDGES = 'galeano-network-edges';
+
+function saveData() {
+  try {
+    localStorage.setItem(STORAGE_KEY_NODES, JSON.stringify(nodes));
+    localStorage.setItem(STORAGE_KEY_EDGES, JSON.stringify(edges));
+    const s = document.getElementById('save-status');
+    s.textContent = 'Saved';
+    setTimeout(() => s.textContent = '', 2000);
+  } catch(e) { console.warn('Save failed:', e); }
+}
+
+function loadData() {
+  try {
+    const n = localStorage.getItem(STORAGE_KEY_NODES);
+    const e = localStorage.getItem(STORAGE_KEY_EDGES);
+    nodes = n ? JSON.parse(n) : DEFAULT_NODES.map(x => ({...x}));
+    edges = e ? JSON.parse(e) : DEFAULT_EDGES.map(x => ({...x}));
+  } catch(e) {
+    nodes = DEFAULT_NODES.map(x => ({...x}));
+    edges = DEFAULT_EDGES.map(x => ({...x}));
+  }
+  nid = Math.max(0, ...nodes.map(n => n.id || 0)) + 1;
+  eid = Math.max(0, ...edges.map(e => e.id || 0)) + 1;
+}
+
+function resetData() {
+  if (!confirm('Reset all data to defaults? This cannot be undone.')) return;
+  nodes = DEFAULT_NODES.map(x => ({...x}));
+  edges = DEFAULT_EDGES.map(x => ({...x}));
+  nid = nodes.length + 1; eid = edges.length + 1;
+  saveData(); renderNT(); renderET(); renderNet();
+}
+
+// ── Tab switching ─────────────────────────────────────────────
+function switchTab(t) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', (i === 0 && t === 'nodes') || (i === 1 && t === 'edges'));
+  });
+  document.getElementById('nodes-tab').classList.toggle('active', t === 'nodes');
+  document.getElementById('edges-tab').classList.toggle('active', t === 'edges');
+}
+
+// ── Helpers ───────────────────────────────────────────────────
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Nodes table ───────────────────────────────────────────────
+function renderNT() {
+  const tb = document.getElementById('ntbody');
+  tb.innerHTML = '';
+  nodes.forEach((n, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" value="${esc(n.name)}" oninput="nodes[${i}].name=this.value;renderET()" placeholder="Name" style="min-width:90px"></td>
+      <td>
+        <select onchange="nodes[${i}].type=this.value">
+          <option value="person"${n.type==='person'?' selected':''}>Person</option>
+          <option value="organization"${n.type==='organization'?' selected':''}>Org</option>
+        </select>
+      </td>
+      <td>
+        <select onchange="nodes[${i}].group=this.value">
+          <option value="Uruguay"${n.group==='Uruguay'?' selected':''}>Uruguay</option>
+          <option value="China"${n.group==='China'?' selected':''}>China</option>
+          <option value="Czechoslovakia"${n.group==='Czechoslovakia'?' selected':''}>Czech.</option>
+          <option value="Other"${n.group==='Other'?' selected':''}>Other</option>
+        </select>
+      </td>
+      <td><input type="text" value="${esc(n.notes||'')}" oninput="nodes[${i}].notes=this.value" placeholder="Notes" style="min-width:80px"></td>
+      <td><button class="del-btn" onclick="delNode(${i})">×</button></td>
+    `;
+    tb.appendChild(tr);
+  });
+}
+
+// ── Edges table ───────────────────────────────────────────────
+function renderET() {
+  const tb = document.getElementById('etbody');
+  tb.innerHTML = '';
+  const names = nodes.map(n => n.name).filter(Boolean);
+  edges.forEach((e, i) => {
+    const fo = names.map(n => `<option value="${esc(n)}"${e.from===n?' selected':''}>${esc(n)}</option>`).join('');
+    const to = names.map(n => `<option value="${esc(n)}"${e.to===n?' selected':''}>${esc(n)}</option>`).join('');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><select onchange="edges[${i}].from=this.value" style="min-width:110px"><option value="">-- From --</option>${fo}</select></td>
+      <td><select onchange="edges[${i}].to=this.value" style="min-width:110px"><option value="">-- To --</option>${to}</select></td>
+      <td><input type="text" value="${esc(e.rel||'')}" oninput="edges[${i}].rel=this.value" placeholder="Relationship" style="min-width:90px"></td>
+      <td><button class="del-btn" onclick="delEdge(${i})">×</button></td>
+    `;
+    tb.appendChild(tr);
+  });
+}
+
+function addNode() {
+  nodes.push({ id: nid++, name: '', type: 'person', group: 'Uruguay', notes: '' });
+  renderNT(); renderET();
+  document.getElementById('nodes-tab').scrollTop = 99999;
+}
+
+function addEdge() {
+  edges.push({ id: eid++, from: '', to: '', rel: '' });
+  renderET();
+  document.getElementById('edges-tab').scrollTop = 99999;
+}
+
+function delNode(i) { nodes.splice(i, 1); renderNT(); renderET(); }
+function delEdge(i) { edges.splice(i, 1); renderET(); }
+
+// ── Network rendering ─────────────────────────────────────────
+function renderNet() {
+  const container = document.getElementById('net');
+  container.innerHTML = '';
+
+  const vn = nodes.filter(n => n.name).map(n => {
+    const c = gc(n.group, n.type);
+    const lbl = n.name.length > 22 ? n.name.substring(0, 20) + '…' : n.name;
+    return {
+      id: n.name,
+      label: lbl,
+      shape: n.type === 'person' ? 'ellipse' : 'box',
+      color: { background: c.bg, border: c.bd, highlight: { background: c.hl, border: c.bd } },
+      font: { color: c.fc, size: 11, face: 'system-ui, sans-serif' },
+      borderWidth: 1.5,
+      _d: n
+    };
+  });
+
+  const ve = edges.filter(e => e.from && e.to).map((e, i) => ({
+    id: i, from: e.from, to: e.to,
+    label: e.rel || '',
+    font: { size: 9, color: '#999', face: 'system-ui, sans-serif', align: 'middle' },
+    color: { color: '#ccc', highlight: '#888' },
+    arrows: { to: { enabled: true, scaleFactor: 0.5 } },
+    smooth: { type: 'dynamic' },
+    width: 1
+  }));
+
+  const data = {
+    nodes: new vis.DataSet(vn),
+    edges: new vis.DataSet(ve)
+  };
+
+  const options = {
+    physics: {
+      enabled: true,
+      barnesHut: {
+        gravitationalConstant: -4000,
+        centralGravity: 0.25,
+        springLength: 160,
+        springConstant: 0.03,
+        damping: 0.5
+      }
+    },
+    interaction: { hover: true, zoomView: true, dragView: true },
+    layout: { improvedLayout: true }
+  };
+
+  if (network) network.destroy();
+  network = new vis.Network(container, data, options);
+
+  network.on('click', p => {
+    if (p.nodes.length > 0) {
+      const nd = nodes.find(n => n.name === p.nodes[0]);
+      if (nd) showInfo(nd);
+    } else {
+      closeInfo();
+    }
+  });
+
+  buildLegend();
+  saveData();
+}
+
+// ── Info panel ────────────────────────────────────────────────
+function showInfo(n) {
+  const c = gc(n.group, n.type);
+  document.getElementById('iname').textContent = n.name;
+  const b = document.getElementById('ibadge');
+  b.textContent = `${n.type === 'person' ? 'Person' : 'Organization'} · ${n.group}`;
+  b.style.background = c.bg; b.style.color = c.fc; b.style.border = `1px solid ${c.bd}`;
+  document.getElementById('inotes').textContent = n.notes || '—';
+  document.getElementById('infop').classList.add('vis');
+}
+
+function closeInfo() { document.getElementById('infop').classList.remove('vis'); }
+
+// ── Legend ────────────────────────────────────────────────────
+function buildLegend() {
+  const groups = [...new Set(nodes.filter(n => n.name).map(n => n.group))];
+  const leg = document.getElementById('legend');
+  let h = '<div class="legend-title">Legend</div>';
+  groups.forEach(g => {
+    const p = gc(g, 'person'), o = gc(g, 'organization');
+    h += `<div class="legend-item"><div class="l-dot" style="background:${p.bg};border-color:${p.bd}"></div><span>${g} person</span></div>`;
+    h += `<div class="legend-item"><div class="l-box" style="background:${o.bg};border:1.5px solid ${o.bd}"></div><span>${g} org.</span></div>`;
+  });
+  leg.innerHTML = h;
+  leg.style.display = 'block';
+}
+
+// ── Init ──────────────────────────────────────────────────────
+loadData();
+renderNT();
+renderET();
+renderNet();
+</script>
+</body>
+</html>
